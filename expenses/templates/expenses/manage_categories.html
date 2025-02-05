@@ -1,0 +1,50 @@
+{% extends 'expenses/base.html' %}
+
+{% block title %}Manage Categories{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Manage Categories</h2>
+
+    <!-- Add Category  -->
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="category_name">Category Name</label>
+            <input type="text" id="category_name" name="category_name" placeholder="Enter new category name" required>
+        </div>
+        <button type="submit">Add Category</button>
+    </form>
+
+    <hr class="separator">
+
+
+    <h3>Existing Categories</h3>
+    {% if categories.exists %}
+    <table>
+        <thead>
+            <tr>
+                <th>Category Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+            <tr>
+                <td>{{ category.name }}</td>
+                <td class="action-buttons">
+    <a href="{% url 'expenses:edit_category' category.id %}" class="edit">Edit</a>
+    <form action="{% url 'expenses:delete_category' category.id %}" method="post" style="margin: 0;">
+        {% csrf_token %}
+        <button type="submit" class="delete">Delete</button>
+    </form>
+</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No categories added yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

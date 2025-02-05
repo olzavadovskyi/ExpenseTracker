@@ -1,0 +1,15 @@
+{% extends 'expenses/base.html' %}
+
+{% block title %}Delete Category{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Delete Category</h2>
+    <p>Are you sure you want to delete the category "{{ category.name }}"? This action cannot be undone.</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, Delete</button>
+        <a href="{% url 'expenses:manage_categories' %}"><button type="button">Cancel</button></a>
+    </form>
+</div>
+{% endblock %}

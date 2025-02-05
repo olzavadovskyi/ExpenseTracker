@@ -1,0 +1,51 @@
+{% extends 'expenses/base.html' %}
+
+{{% block title %}Expense Details{% endblock %}
+
+{% block content %}
+<div class="expense-detail-container">
+    <h2>Expense Details for {{ selected_date }}</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Currency</th>
+                <th>In USD</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for expense in expenses %}
+            <tr>
+                <td>{{ expense.category }}</td>
+                <td>{{ expense.name }}</td>
+                <td>{{ expense.amount }}</td>
+                <td>{{ expense.currency }}</td>
+                <td>
+                    {% if expense.amount_in_usd == 'N/A' %}
+                    N/A
+                    {% else %}
+                    {{ expense.amount_in_usd|floatformat:2 }}
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No expenses found for this day.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" style="text-align: right;"><strong>Total:</strong></td>
+                <td><strong>{{ total_in_usd|floatformat:2 }}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+    <a href="{% url 'expenses:add_expense' %}?date={{ selected_date|date:'Y-m-d' }}">
+        <button class="blue-button">Add Expense</button>
+    </a>
+</div>
+{% endblock %}

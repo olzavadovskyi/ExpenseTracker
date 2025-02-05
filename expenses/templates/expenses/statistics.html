@@ -1,0 +1,78 @@
+{% extends 'expenses/base.html' %}
+
+{% block title %}Statistics{% endblock %}
+
+{% block content %}
+<div class="statistics-container">
+    <h2>Statistics</h2>
+    
+    <!-- Filter -->
+    <form method="get" class="filter-form">
+        <div class="filter-grid">
+
+            <div class="filter-group">
+                <label for="start_date">From:</label>
+                <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+            </div>
+
+
+            <div class="filter-group">
+                <label for="end_date">To:</label>
+                <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+            </div>
+
+            <!-- Category -->
+            <div class="filter-group">
+                <label for="category">Category:</label>
+                <select id="category" name="category">
+                    <option value="all" {% if selected_category == 'all' %}selected{% endif %}>All</option>
+                    {% for category in categories %}
+                    <option value="{{ category.id }}" {% if category.id|stringformat:'s' == selected_category %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Submit  -->
+            <div class="filter-group">
+                <button type="submit">Filter</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Statistics table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Category</th>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Currency</th>
+                <th>In USD</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in statistics_data %}
+            <tr>
+                <td>{{ item.date }}</td>
+                <td>{{ item.category }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.amount }}</td>
+                <td>{{ item.currency }}</td>
+                <td>{{ item.amount_in_usd|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No expenses found for the selected filters.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="total">
+        <strong>Total in USD:</strong> {{ total_in_usd|floatformat:2 }}
+    </div>
+</div>
+{% endblock %}

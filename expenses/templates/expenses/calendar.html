@@ -1,0 +1,38 @@
+{% extends 'expenses/base.html' %}
+
+{% block title %}Calendar - Expense Tracker{% endblock %}
+
+{% block content %}
+<div class="calendar">
+    <div class="calendar-header">
+    <!-- Previous month button -->
+    {% if year > min_year or month > 1 %}
+    <a href="?month={{ month|add:"-1" }}&year={{ year }}">
+        <button>&lt; Prev</button>
+    </a>
+    {% else %}
+    <button disabled>&lt; Prev</button>
+    {% endif %}
+
+    <!-- Current  -->
+    <h2>{{ month_name }} {{ year }}</h2>
+
+    <!-- Next month button -->
+    {% if year < max_year or month < 12 %}
+    <a href="?month={{ month|add:"1" }}&year={{ year }}">
+        <button>Next &gt;</button>
+    </a>
+    {% else %}
+    <button disabled>Next &gt;</button>
+    {% endif %}
+</div>
+
+    <div class="days-grid">
+    {% for day_info in days %}
+    <a href="{% url 'expenses:expense_detail' %}?date={{ day_info.formatted_day }}">
+        <div class="day">{{ day_info.day }}</div>
+    </a>
+    {% endfor %}
+</div>
+</div>
+{% endblock %}

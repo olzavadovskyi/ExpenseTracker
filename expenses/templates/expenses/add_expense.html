@@ -1,0 +1,69 @@
+{% extends 'expenses/base.html' %}
+
+{% block title %}Add Expense{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Add Expense</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Categories select -->
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+                <option value="" disabled selected>Select a category</option>
+                {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Expense Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter expense name" required>
+        </div>
+
+        <!-- Date Input -->
+        {% if selected_date %}
+        <!-- Hidden  date is selected in calendar -->
+        <input type="hidden" id="date" name="date" value="{{ selected_date|date:'Y-m-d' }}">
+        {% else %}
+        <!-- Visible  -->
+        <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required>
+        </div>
+        {% endif %}
+
+
+        <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" id="amount" name="amount" placeholder="Enter amount" required>
+        </div>
+
+        <!-- Currency -->
+        <div class="form-group">
+            <label for="currency">Currency</label>
+            <select id="currency" name="currency" required>
+                <option value="USD" selected>USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="INR">INR</option>
+                <option value="CAD">CAD</option>
+                <!-- Here could be others -->
+            </select>
+        </div>
+
+        <!-- Submit  -->
+        <button type="submit">Add Expense</button>
+    </form>
+
+    <!-- Return button -->
+    <div style="margin-top: 1rem;">
+        <a href="{% url 'expenses:expense_detail' %}?date={{ selected_date|date:'Y-m-d' }}">
+            <button type="button">Return to Expense Details</button>
+        </a>
+    </div>
+</div>
+{% endblock %}
