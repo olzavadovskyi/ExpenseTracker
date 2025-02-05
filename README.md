@@ -26,7 +26,7 @@ Ensure you have the following installed:
 
 ### Step 1: Clone the Repository
 ```sh
- git clone https://github.com/yourusername/expense-tracker.git
+ git clone https://github.com/olzavadovskyi/expense-tracker.git
  cd Expense-Tracker
 ```
 
